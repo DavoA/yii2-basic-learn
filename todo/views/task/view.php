@@ -1,18 +1,17 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+/** @var bool $isAll */
 
-/** @var yii\web\View $this */
-/** @var app\models\Task $model */
-
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tasks'), 'url' => ['index']];
+$this->title = $model->title;;
+$this->params['breadcrumbs'][] = [
+    'label' => Yii::t('app', 'Tasks'),
+    'url' => $isAll ? ['index-all'] : ['index'],
+];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
-<div class="task-view">
 
+<div class="task-view">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
@@ -26,16 +25,23 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
+    <?php
+    $attributes = [
+        'id',
+        'title',
+        'description:ntext',
+        'status',
+        'created_at',
+    ];
+
+    if (!empty($isAll)) {
+        $attributes[] = 'user_id';
+    }
+
+    echo DetailView::widget([
         'model' => $model,
-        'attributes' => [
-            'id',
-            'title',
-            'description:ntext',
-            'status',
-            'created_at',
-            'user_id',
-        ],
-    ]) ?>
+        'attributes' => $attributes,
+    ]);
+    ?>
 
 </div>

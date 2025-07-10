@@ -24,6 +24,16 @@ use yii\widgets\ActiveForm;
         'completed' => Yii::t('app', 'Completed'), 
     ], ['prompt' => Yii::t('app', 'Select status')])  ?>
 
+    <?php if (!empty($isAll)): ?>
+        <?php
+            $usersList = ArrayHelper::map(User::find()->all(), 'id', 'username');
+        ?>
+        <?= $form->field($model, 'user_id')->dropDownList(
+            $usersList,
+            ['prompt' => Yii::t('app', 'Select User')]
+        )->label(Yii::t('app', 'User')) ?>
+    <?php endif; ?>
+
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>

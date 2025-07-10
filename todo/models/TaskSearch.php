@@ -24,10 +24,13 @@ class TaskSearch extends Task
         return Model::scenarios();
     }
 
-    public function search($params)
+    public function search($params, $applyUserFilter = false)
     {
-        $query = Task::find()->where(['user_id' => Yii::$app->user->id]);
+        $query = Task::find();
 
+        if ($applyUserFilter) {
+            $query->andWhere(['user_id' => Yii::$app->user->id]);
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]],
@@ -46,6 +49,10 @@ class TaskSearch extends Task
 
         if ($this->created_from && $this->created_to) {
             $query->andWhere(['between', 'created_at', $this->created_from . ' 00:00:00', $this->created_to . ' 23:59:59']);
+        }
+
+        if (!empty($params['TaskSearch']['user_id'])) {
+            $query->andFilterWhere(['user_id' => $params['TaskSearch']['user_id']]);
         }
 
         $query->andFilterWhere(['status' => $this->status])

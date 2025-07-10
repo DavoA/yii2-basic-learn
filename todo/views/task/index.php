@@ -12,12 +12,22 @@ $ajaxSearchUrl = Url::to(['task/search']);
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p><?= Html::a(Yii::t('app', 'Create Task'), ['create'], ['class' => 'btn btn-success']) ?></p>
+    <p>
+        <?= Html::a(Yii::t('app', 'Create Task'), ['create', 'isAll' => $isAll], ['class' => 'btn btn-success']) ?>
+        <?php if(empty($isAll)): ?>
+            <?= Html::a(Yii::t('app', 'View All'), ['index-all'], ['class' => 'btn btn-success'])?>
+        <?php else: ?>
+            <?= Html::a(Yii::t('app', "View User's"), ['index'], ['class' => 'btn btn-success'])?>
+        <?php endif; ?>
+    </p>
+
 
     <div id="grid-view-container">
         <?= $this->render('_grid', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'isAll' => $isAll,
+            'usersList' => $usersList ?? [],
         ]) ?>
     </div>
 

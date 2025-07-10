@@ -64,7 +64,12 @@ return [
     'Description' => 'Նկարագրություն',
     'Pending' => 'Ընթացքի Մեջ',
     'Completed' => 'Ավարտված',
-    'Save' => 'Գրանցել',
+    'Save' => 'Պահպանել',
+    'Select User' => 'Ընտրել օգտատեր',
+    'User' => 'Օգտատեր',
+    // views/task/index.php
+    'View All' => 'Բոլորը',
+    "View User's" => "Օգտատիրոջը",
     // views/task/_grid.php
     'Status' => 'Վիճակ',
     'All' => 'Բոլորը',

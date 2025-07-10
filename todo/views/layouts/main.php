@@ -67,7 +67,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         ];
     }
 
-    $currentLanguage = Yii::$app->language;
+    $currentLanguage = substr(Yii::$app->language, 0, 2);
     $languageLabel = $currentLanguage == 'en' ? 'English' : ($currentLanguage == 'ru' ? 'Русский' : 'Հայերեն');
 
     $menuItems[] = [

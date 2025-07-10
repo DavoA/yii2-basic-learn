@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\User;
 use app\models\Task;
 use app\models\TaskSearch;
 use yii\web\Controller;
@@ -21,13 +22,14 @@ class TaskController extends Controller
                     'delete' => ['POST'],
                     'toggle-status' => ['POST'],
                     'search' => ['GET'],
+                    'search-all' => ['GET'],
                 ],
             ],
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'toggle-status', 'search'],
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'toggle-status', 'search', 'search-all', 'index-all'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -54,59 +56,99 @@ class TaskController extends Controller
     public function actionIndex()
     {
         $searchModel = new TaskSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, true);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'isAll' => false,
+        ]);
+    }
+
+    public function actionIndexAll()
+    {
+        $searchModel = new TaskSearch();
+        $usersList = User::find()
+            ->select(['username', 'id'])
+            ->indexBy('id')
+            ->column();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'isAll' => true,
+            'usersList' => $usersList,
         ]);
     }
 
     public function actionSearch()
     {
         $searchModel = new TaskSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, true);
 
         Yii::info('Search action called with params: ' . print_r(Yii::$app->request->queryParams, true), __METHOD__);
 
         return $this->renderPartial('_grid', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'isAll' => false,
         ]);
     }
 
-    public function actionView($id)
+    public function actionSearchAll()
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+        $searchModel = new TaskSearch();
+        $usersList = User::find()
+            ->select(['username', 'id'])
+            ->indexBy('id')
+            ->column();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->renderPartial('_grid', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'isAll' => true,
+            'usersList' => $usersList,
         ]);
     }
 
-    public function actionCreate()
+    public function actionView($id, $isAll = 0)
+    {
+        $model = $this->findModel($id);
+        return $this->render('view', [
+            'model' => $model,
+            'isAll' => (bool)$isAll,
+        ]);
+    }
+
+    public function actionCreate($isAll = 0)
     {
         $model = new Task();
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id, 'isAll' => $isAll]);
         }
 
         $model->loadDefaultValues();
 
         return $this->render('create', [
             'model' => $model,
+            'isAll' => (bool)$isAll,
         ]);
     }
 
-    public function actionUpdate($id)
+    public function actionUpdate($id, $isAll = 0)
     {
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id, 'isAll' => $isAll]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'isAll' => (bool)$isAll,
         ]);
     }
 

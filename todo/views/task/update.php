@@ -6,7 +6,10 @@ use yii\helpers\Html;
 /** @var app\models\Task $model */
 
 $this->title = Yii::t('app', 'Update Task: ') . $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tasks'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = [
+    'label' => Yii::t('app', 'Tasks'),
+    'url' => $isAll ? ['index-all'] : ['index'],
+];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
@@ -16,6 +19,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
     <?= $this->render('_form', [
         'model' => $model,
+        'isAll' => $isAll,
     ]) ?>
 
 </div>

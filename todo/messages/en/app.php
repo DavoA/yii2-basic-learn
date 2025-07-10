@@ -59,11 +59,16 @@ return [
     // views/auth/change-password.php
     'Change Password' => 'Change Password',
     // views/task/_form.php
+    'User' => 'User',
     'Title' => 'Title',
     'Description' => 'Description',
     'Pending' => 'Pending',
     'Completed' => 'Completed',
     'Save' => 'Save',
+    'Select User' => 'Select User',
+    // views/task/index.php
+    'View All' => 'View All',
+    "View User's" => "View User's",
     // views/task/_grid.php
     'Status' => 'Status',
     'All' => 'All',
@@ -122,4 +127,6 @@ return [
     'Task not found or access denied' => 'Task not found or access denied',
     'Task status updated successfully' => 'Task status updated successfully',
     'Failed to update task status' => 'Failed to update task status',
+    
+
 ];

@@ -66,6 +66,8 @@ return [
     'Pending' => 'В ожидании',
     'Completed' => 'Завершено',
     'Save' => 'Сохранить',
+    'Select User' => 'Выбрать пользователя',
+    'User' => 'Пользователь',
     // views/task/_grid.php
     'Status' => 'Статус',
     'All' => 'Все',
@@ -75,6 +77,9 @@ return [
     'Select date range' => 'Выберите диапазон дат',
     'Actions' => 'Действия',
     'Toggle Status' => 'Переключить статус',
+    // views/task/index.php
+    'View All' => 'Показать все',
+    "View User's" => "Показать задачи пользователя",
     // views/task/_search.php
     'Select status' => 'Выберите статус',
     'Search' => 'Поиск',
