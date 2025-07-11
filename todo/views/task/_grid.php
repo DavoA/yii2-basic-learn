@@ -10,21 +10,32 @@ use kartik\daterange\DateRangePicker;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 /** @var bool $isAll (optional) */
 
+$this->params['breadcrumbs'][] = [
+    'label' => Yii::t('app', 'Tasks'),
+    'url' => $isAll ? ['index-all'] : ['index'],
+];
+
+$ajaxSearchUrl = $isAll
+    ? Url::to(['task/search-all'])
+    : Url::to(['task/search']);
 $columns = [
     ['class' => 'yii\grid\SerialColumn'],
 
     [
         'attribute' => 'title',
         'label' => Yii::t('app', 'Title'),
+        'enableSorting' => false,
     ],
     [
         'attribute' => 'description',
         'label' => Yii::t('app', 'Description'),
         'format' => 'ntext',
+        'enableSorting' => false,
     ],
     [
         'attribute' => 'status',
         'label' => Yii::t('app', 'Status'),
+        'enableSorting' => false,
         'value' => function($model) {
             return Html::tag('span', $model->status === 'completed' ? Yii::t('app', 'Completed') : Yii::t('app', 'Pending'), [
                 'class' => 'status-label',
@@ -41,6 +52,7 @@ $columns = [
         'attribute' => 'created_at',
         'label' => Yii::t('app', 'Created At'),
         'format' => 'datetime',
+        'enableSorting' => false,
         'filter' => DateRangePicker::widget([
             'model' => $searchModel,
             'attribute' => 'date_range',
@@ -71,6 +83,7 @@ if (!empty($isAll)) {
     $columns[] = [
         'attribute' => 'user_id',
         'label' => Yii::t('app', 'User'),
+        'enableSorting' => false,
         'value' => function($model) {
             return $model->user ? Html::encode($model->user->username) : $model->user_id;
         },
@@ -118,4 +131,7 @@ echo GridView::widget([
     ],
     'columns' => $columns,
 ]);
+
+$this->registerJsVar('ajaxSearchUrl', $ajaxSearchUrl);
+$this->registerJsFile('@web/js/task-grid.js', ['depends' => [\yii\web\JqueryAsset::class]]);
 ?>

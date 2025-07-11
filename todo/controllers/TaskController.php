@@ -89,7 +89,7 @@ class TaskController extends Controller
 
         Yii::info('Search action called with params: ' . print_r(Yii::$app->request->queryParams, true), __METHOD__);
 
-        return $this->renderPartial('_grid', [
+        return $this->render('_grid', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'isAll' => false,
@@ -105,7 +105,7 @@ class TaskController extends Controller
             ->column();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->renderPartial('_grid', [
+        return $this->render('_grid', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'isAll' => true,
